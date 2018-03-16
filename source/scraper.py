@@ -3,8 +3,10 @@
 
 import bs4
 import requests
+import datetime
 from twilio.rest import Client
 
+'''
 mountain_list = ['Stowe+Mountain+Resort',
                  'Smugglers+Notch',
                  'Killington+Ski+Resort',
@@ -13,58 +15,64 @@ mountain_list = ['Stowe+Mountain+Resort',
                  'Bolton+Valley+Ski+Area',
                  'Sugarbush+Resort',
                  'Mad+River+Glen']
+'''
 
 
 def scraper():
-    for mountain in mountain_list:
+    today = datetime.datetime.now()
+    print('Downloading current snow report for %s...' % (today))
 
-        print('Downloading current snow report for %s...' % (mountain))
+    # get page
+    res = requests.get('https://www.smuggs.com/pages/winter/snowReport/')
+    res.raise_for_status()
 
-        # get page
-        res = requests.get('https://www.google.com/search?ei=JiOgWtGbBIeSsAWZmpvAAg&q=%+snow+report' % (mountain))
-        res.raise_for_status()
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
 
-        soup = bs4.BeautifulSoup(res.text, 'html.parser')
+    # get current snow report for last 24 hours
+    print('Searching for recent snowfall at Smugg\'s...')
+    element = soup.find_all('b')
+    element = element[6].text
+    print(element)
+    print('\n')
 
-        # get current snow report for last 24 hours
-        print('Searching for recent snowfall at %s...' % (mountain))
-        element = soup.find_all(text="24 Hours")
-        # element = element[15]
-        print(element)
-        print('\n')
+    # if no element found
+    if not element:
+        print('Could not find recent snow fall data.')
+    else:
+        print('Snowfall: ' + element)
 
-        '''
+    snow_fall = int(element[0])
 
+    # if element greater than 4 inches, it's a powder day
+    if snow_fall >= 4:
+        powder_day = True
+    else:
+        powder_day = False
 
-        if not element:
-            print('Could not find recent snow fall for %s.' % (mountain))
-        else:
-            print('Snowfall: ' + element)
+    print(powder_day)
 
-            '''
+    def send_text():
 
-        '''
-        def send_text():
-            if element >= 6:
+        if powder_day:
 
-                # send text with Twilio
-                account_sid = "YOUR_ACCOUNT_SID"
-                auth_token = "YOUR_AUTH_TOKEN"
-                client = Client(account_sid, auth_token)
+            # send text with Twilio
+            account_sid = "YOUR_ACCOUNT_SID"
+            auth_token = "YOUR_AUTH_TOKEN"
+            client = Client(account_sid, auth_token)
 
-                client.api.account.messages.create(
+            client.api.account.messages.create(
 
-                    to="YOUR_PHONE",
+                to="YOUR_PHONE",
                     from_="YOUR_TWILIO_NUMBER",
                     body=("It snowed " + element + 'inches at %s in the past 24 hours.' % (mountain))
                 )
 
-                print('Just sent a text message...')
-            else:
-                pass
+            print('Just sent a text message...')
+        else:
+            pass
 
-        send_text()
-        '''
+    send_text()
+    
 
 
 
