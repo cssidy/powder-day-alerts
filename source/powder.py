@@ -1,21 +1,10 @@
 #! /usr/bin/python3.5
-# scrapes google search engine for current snow reports
+# scrapes Smugglers' Notch snow report for snow status, sends a text if it's a powder day
 
 import bs4
 import requests
 import datetime
 from twilio.rest import Client
-
-'''
-mountain_list = ['Stowe+Mountain+Resort',
-                 'Smugglers+Notch',
-                 'Killington+Ski+Resort',
-                 'Jay+Peak+Resort',
-                 'Burke+Mountain+Ski+Area',
-                 'Bolton+Valley+Ski+Area',
-                 'Sugarbush+Resort',
-                 'Mad+River+Glen']
-'''
 
 
 def scraper():
@@ -42,9 +31,10 @@ def scraper():
         print('Snowfall: ' + element)
 
     snow_fall = int(element[0])
+    time_passed = int(element[8:10])
 
     # if element greater than 4 inches, it's a powder day
-    if snow_fall >= 4:
+    if snow_fall >= 4 and time_passed is 24:
         powder_day = True
     else:
         powder_day = False
@@ -56,16 +46,15 @@ def scraper():
         if powder_day:
 
             # send text with Twilio
-            account_sid = "YOUR_ACCOUNT_SID"
-            auth_token = "YOUR_AUTH_TOKEN"
+            account_sid = ""
+            auth_token = ""
             client = Client(account_sid, auth_token)
 
             client.api.account.messages.create(
-
-                to="YOUR_PHONE",
-                    from_="YOUR_TWILIO_NUMBER",
-                    body=("It snowed " + element + 'inches at %s in the past 24 hours.' % (mountain))
-                )
+                to="+",
+                from_="",
+                body=("It snowed " + element)
+            )
 
             print('Just sent a text message...')
         else:
