@@ -1,6 +1,6 @@
 # Powder Day Alerts
 A script that watches Smugglers' Notch Resort for "powder days", sends alerts when 
-more than 6" of snow has fallen in 24 hours.
+more than 4" of snow has fallen in 24 hours.
 
 ### What's a powder day?
 The best feeling in the world! Floating on a cloud of deep, white fluff, surfing the mountain, huge
