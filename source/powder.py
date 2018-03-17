@@ -72,7 +72,7 @@ def scraper():
             pass
 
     send_text()
-    
+
 
 
 
