@@ -15,6 +15,6 @@ You must download this repository to your own machine, adjust the Twilio API cre
 to match your own account's, adjust the phone number to match your own, and then create a 
 Cron job for the powder.py script.
 
-#### Cron instructions
+### Cron instructions
 Smugglers' Notch releases their snow report every day (during the open season) between 6am - 8am. Lifts 
 open at 8:30am. I run the script everyday at 7:30am because it takes me an hour to get to the mountain.
