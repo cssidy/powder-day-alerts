@@ -14,7 +14,7 @@ This script will text you if it's a powder day as soon as a snow report is relea
 Some of the things you need to install (included in the requirements.txt file):
 
 * [Twilio](http://www.dropwizard.io/1.0.2/docs/) - Twilio offers a free trial that gives you one text-able phone number
-* [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) - Beautiful Soup for web scraping
+* [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) - Beautiful Soup for web scraping
 
 ## How to use
 You must download this repository to your own machine, adjust the Twilio API credentials 
